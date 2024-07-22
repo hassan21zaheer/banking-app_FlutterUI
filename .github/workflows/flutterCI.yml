@@ -1,0 +1,32 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set up the Flutter SDK with a specific version
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.8' # Specify a Flutter version that includes Dart SDK >=3.2.0
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Uncomment this step to verify the use of 'flutter format' on each commit.
+      # - name: Verify formatting
+      #   run: flutter format --set-exit-if-changed .
+
+      - name: Analyze project source
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
